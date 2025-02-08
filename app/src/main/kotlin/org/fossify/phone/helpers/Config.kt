@@ -50,6 +50,15 @@ class Config(context: Context) : BaseConfig(context) {
         prefs.edit().remove(REMEMBER_SIM_PREFIX + number).apply()
     }
 
+    // null - first time setup
+    // -1 = no password set
+    val hidePhoneNumber: Boolean
+        get() = !hidePhoneNumberPassword.isNullOrEmpty() && hidePhoneNumberPassword != "-1"
+
+    var hidePhoneNumberPassword: String?
+        get() = prefs.getString(HIDE_PHONE_NUMBER, null)
+        set(hidePhoneNumber) = prefs.edit().putString(HIDE_PHONE_NUMBER, hidePhoneNumber).apply()
+
     var showTabs: Int
         get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
         set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()

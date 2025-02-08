@@ -21,6 +21,7 @@ import org.fossify.phone.R
 import org.fossify.phone.databinding.ActivitySettingsBinding
 import org.fossify.phone.dialogs.ExportCallHistoryDialog
 import org.fossify.phone.dialogs.ManageVisibleTabsDialog
+import org.fossify.phone.dialogs.PasswordDialogFragment
 import org.fossify.phone.extensions.config
 import org.fossify.phone.helpers.RecentsHelper
 import org.fossify.phone.models.RecentCall
@@ -64,7 +65,7 @@ class SettingsActivity : SimpleActivity() {
         super.onResume()
         setupToolbar(binding.settingsToolbar, NavigationIcon.Arrow)
 
-        setupPurchaseThankYou()
+        setupHidePhoneNumbers()
         setupCustomizeColors()
         setupUseEnglish()
         setupLanguage()
@@ -91,6 +92,7 @@ class SettingsActivity : SimpleActivity() {
 
         binding.apply {
             arrayOf(
+                settingsHidePhoneNumberSectionLabel,
                 settingsColorCustomizationSectionLabel,
                 settingsGeneralSettingsLabel,
                 settingsStartupLabel,
@@ -107,10 +109,12 @@ class SettingsActivity : SimpleActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun setupPurchaseThankYou() {
-        binding.settingsPurchaseThankYouHolder.beGoneIf(isOrWasThankYouInstalled())
-        binding.settingsPurchaseThankYouHolder.setOnClickListener {
-            launchPurchaseThankYouIntent()
+    private fun setupHidePhoneNumbers() {
+//        binding.settingsHidePhoneNumberLabel.text = getCustomizeColorsString()
+        binding.settingsHidePhoneNumberHolder.setOnClickListener {
+            PasswordDialogFragment { newPassword ->
+                config.hidePhoneNumberPassword = newPassword
+            }.show(supportFragmentManager, "password_dialog")
         }
     }
 

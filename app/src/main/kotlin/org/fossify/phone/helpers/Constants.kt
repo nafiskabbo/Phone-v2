@@ -5,6 +5,7 @@ import org.fossify.commons.helpers.TAB_CONTACTS
 import org.fossify.commons.helpers.TAB_FAVORITES
 
 // shared prefs
+const val HIDE_PHONE_NUMBER = "hide_phone_number"
 const val SPEED_DIAL = "speed_dial"
 const val REMEMBER_SIM_PREFIX = "remember_sim_"
 const val GROUP_SUBSEQUENT_CALLS = "group_subsequent_calls"

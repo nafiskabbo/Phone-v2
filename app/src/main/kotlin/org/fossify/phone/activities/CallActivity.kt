@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.BlurMaskFilter
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
 import android.media.AudioManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.PowerManager
+import android.os.*
 import android.telecom.Call
 import android.telecom.CallAudioState
 import android.view.MotionEvent
@@ -19,6 +19,8 @@ import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.children
@@ -579,6 +581,8 @@ class CallActivity : SimpleActivity() {
                 if (numberLabel.isNotEmpty()) {
                     callerNumber.text = "$number - $numberLabel"
                 }
+                callerNumber.applyBlurEffect(config)
+
             } else {
                 callerNumber.beGone()
             }

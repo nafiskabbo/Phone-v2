@@ -137,7 +137,7 @@ class RecentCallsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val callRecord = currentList[position]
+        val callRecord = currentList[holder.bindingAdapterPosition]
         when (holder) {
             is RecentCallDateViewHolder -> holder.bind(callRecord as CallLogItem.Date)
             is RecentCallViewHolder -> holder.bind(callRecord as RecentCall)
@@ -436,10 +436,13 @@ class RecentCallsAdapter(
                 itemRecentsHolder.isSelected = selectedKeys.contains(call.id)
                 val name = findContactByCall(call)?.getNameToDisplay() ?: call.name
                 val formatPhoneNumbers = activity.config.formatPhoneNumbers
-                var nameToShow = if (name == call.phoneNumber && formatPhoneNumbers) {
-                    SpannableString(name.formatPhoneNumber())
+                val hidePhoneNumber = activity.config.hidePhoneNumber
+                val isNumberOnly = name == call.phoneNumber
+//                val blurNumber = name == call.phoneNumber
+                var nameToShow = if (isNumberOnly && formatPhoneNumbers) {
+                    SpannableString(if (hidePhoneNumber) getBlurNumber() else name.formatPhoneNumber())
                 } else {
-                    SpannableString(name)
+                    SpannableString(if (hidePhoneNumber && isNumberOnly) getBlurNumber() else name)
                 }
 
                 if (call.specificType.isNotEmpty()) {
@@ -465,6 +468,11 @@ class RecentCallsAdapter(
 
                 itemRecentsName.apply {
                     text = nameToShow
+                    if (isNumberOnly) {
+                        applyBlurEffect(activity.config)
+                    } else {
+                        removeBlurEffect()
+                    }
                     setTextColor(textColor)
                     setTextSize(TypedValue.COMPLEX_UNIT_PX, currentFontSize)
                 }
