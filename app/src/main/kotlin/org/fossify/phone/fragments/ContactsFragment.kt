@@ -1,7 +1,9 @@
 package org.fossify.phone.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
+import androidx.core.view.isVisible
 import org.fossify.commons.adapters.MyRecyclerViewAdapter
 import org.fossify.commons.extensions.*
 import org.fossify.commons.helpers.*
@@ -9,6 +11,7 @@ import org.fossify.commons.models.contacts.Contact
 import org.fossify.phone.R
 import org.fossify.phone.activities.MainActivity
 import org.fossify.phone.activities.SimpleActivity
+import org.fossify.phone.activities.contacts.EditContactActivity
 import org.fossify.phone.adapters.ContactsAdapter
 import org.fossify.phone.databinding.FragmentContactsBinding
 import org.fossify.phone.databinding.FragmentLettersLayoutBinding
@@ -26,6 +29,13 @@ class ContactsFragment(context: Context, attributeSet: AttributeSet) : MyViewPag
         super.onFinishInflate()
         binding = FragmentLettersLayoutBinding.bind(FragmentContactsBinding.bind(this).contactsFragment)
         innerBinding = LettersInnerBinding(binding)
+    }
+
+    override fun fabClicked() {
+        activity?.hideKeyboard()
+        Intent(context, EditContactActivity::class.java).apply {
+            context.startActivity(this)
+        }
     }
 
     override fun setupFragment() {

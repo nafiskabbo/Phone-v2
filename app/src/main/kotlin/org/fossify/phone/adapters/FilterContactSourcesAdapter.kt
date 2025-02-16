@@ -14,7 +14,7 @@ import org.fossify.phone.databinding.ItemFilterContactSourceBinding
 class FilterContactSourcesAdapter(
     val activity: SimpleActivity,
     private val contactSources: List<ContactSource>,
-    private val displayContactSources: ArrayList<String>
+    private val displayContactSources: List<String>
 ) : RecyclerView.Adapter<FilterContactSourcesAdapter.ViewHolder>() {
 
     private val selectedKeys = HashSet<Int>()

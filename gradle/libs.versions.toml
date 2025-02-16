@@ -10,6 +10,8 @@ eventbus = "3.3.1"
 commons = "4f91781981"
 #Gradle
 gradlePlugins-agp = "8.7.3"
+#EzVCard
+ezvcard = "0.11.3"
 #Other
 indicatorFastScroll = "4524cd0b61"
 autofitTextView = "0.2.1"
@@ -23,7 +25,7 @@ app-build-kotlinJVMTarget = "17"
 #app-version-appId = "com.kabbodev.phone"
 app-version-appId = "org.fossify.phone"
 app-version-versionCode = "1"
-app-version-versionName = "1.0.0"
+app-version-versionName = "1.0.1"
 [libraries]
 #Fossify
 fossify-commons = { module = "org.fossify:commons", version.ref = "commons" }
@@ -31,6 +33,8 @@ fossify-commons = { module = "org.fossify:commons", version.ref = "commons" }
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 #Kotlin
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+#EzVcard
+ezvcard = { module = "com.googlecode.ez-vcard:ez-vcard", version.ref = "ezvcard" }
 #Other
 indicator-fast-scroll = { module = "org.fossify:IndicatorFastScroll", version.ref = "indicatorFastScroll" }
 autofit-text-view = { module = "me.grantland:autofittextview", version.ref = "autofitTextView" }

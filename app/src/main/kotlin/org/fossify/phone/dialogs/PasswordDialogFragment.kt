@@ -10,10 +10,11 @@ import org.fossify.phone.databinding.DialogPasswordBinding
 import org.fossify.phone.extensions.config
 
 class PasswordDialogFragment(
+    private val isVerifyMode: Boolean = false,
     private val onPasswordSet: (String?) -> Unit
 ) : DialogFragment() {
 
-    enum class Mode { FIRST_TIME, SETTINGS }
+    enum class Mode { FIRST_TIME, VERIFY, SETTINGS }
 
     private lateinit var binding: DialogPasswordBinding
     private lateinit var mode: Mode
@@ -22,13 +23,18 @@ class PasswordDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogPasswordBinding.inflate(layoutInflater)
         currentPassword = requireActivity().config.hidePhoneNumberPassword
-        mode = if (currentPassword == null || currentPassword == "-1") Mode.FIRST_TIME else Mode.SETTINGS
+        mode = if (isVerifyMode) {
+            Mode.VERIFY
+        } else {
+            if (currentPassword == null || currentPassword == "-1") Mode.FIRST_TIME else Mode.SETTINGS
+        }
 
         val builder = AlertDialog.Builder(requireContext()).setView(binding.root)
         isCancelable = mode != Mode.FIRST_TIME // First-time setup is mandatory
 
         when (mode) {
             Mode.FIRST_TIME -> setupFirstTimeUI()
+            Mode.VERIFY -> setupVerifyUI()
             Mode.SETTINGS -> setupSettingsUI()
         }
 
@@ -57,6 +63,25 @@ class PasswordDialogFragment(
             }
 
             onPasswordSet(newPass)
+            dismiss()
+        }
+    }
+
+    private fun setupVerifyUI() {
+        binding.layoutCurrentPassword.beGoneIf(currentPassword.isNullOrEmpty()) // Show only if password exists
+        binding.layoutNewPassword.beGone()
+        binding.layoutConfirmNewPassword.beGone()
+        binding.btnRemovePassword.beGone()
+        binding.btnSave.text = "Show"
+
+        binding.btnSave.setOnClickListener {
+            val enteredPassword = binding.etCurrentPassword.text.toString()
+            if (enteredPassword != currentPassword) {
+                binding.etCurrentPassword.error = "Incorrect password!"
+                return@setOnClickListener
+            }
+
+            onPasswordSet(enteredPassword)
             dismiss()
         }
     }

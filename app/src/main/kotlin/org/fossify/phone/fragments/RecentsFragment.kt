@@ -81,6 +81,10 @@ class RecentsFragment(
         updateSearchResult()
     }
 
+    override fun fabClicked() {
+
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun updateSearchResult() {
         ensureBackgroundThread {

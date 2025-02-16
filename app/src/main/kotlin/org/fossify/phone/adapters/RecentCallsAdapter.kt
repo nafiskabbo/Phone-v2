@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.util.TypedValue
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import org.fossify.commons.adapters.MyRecyclerViewListAdapter
@@ -23,6 +24,7 @@ import org.fossify.phone.activities.MainActivity
 import org.fossify.phone.activities.SimpleActivity
 import org.fossify.phone.databinding.ItemRecentCallBinding
 import org.fossify.phone.databinding.ItemRecentsDateBinding
+import org.fossify.phone.dialogs.PasswordDialogFragment
 import org.fossify.phone.dialogs.ShowGroupedCallsDialog
 import org.fossify.phone.extensions.*
 import org.fossify.phone.helpers.RecentsHelper
@@ -440,9 +442,11 @@ class RecentCallsAdapter(
                 val isNumberOnly = name == call.phoneNumber
 //                val blurNumber = name == call.phoneNumber
                 var nameToShow = if (isNumberOnly && formatPhoneNumbers) {
-                    SpannableString(if (hidePhoneNumber) getBlurNumber() else name.formatPhoneNumber())
+                    SpannableString(name.formatPhoneNumber())
+//                    SpannableString(if (hidePhoneNumber) getBlurNumber() else name.formatPhoneNumber())
                 } else {
-                    SpannableString(if (hidePhoneNumber && isNumberOnly) getBlurNumber() else name)
+                    SpannableString(name)
+//                    SpannableString(if (hidePhoneNumber && isNumberOnly) getBlurNumber() else name)
                 }
 
                 if (call.specificType.isNotEmpty()) {
@@ -466,12 +470,20 @@ class RecentCallsAdapter(
                     nameToShow = SpannableString(nameToShow.toString().highlightTextPart(textToHighlight, properPrimaryColor))
                 }
 
+                itemRecentsShowNumber.setOnClickListener {
+                    PasswordDialogFragment(isVerifyMode = true) {
+                        itemRecentsName.removeBlurEffect()
+                        itemRecentsShowNumber.isVisible = false
+                    }.show(activity.supportFragmentManager, "password_dialog")
+                }
                 itemRecentsName.apply {
                     text = nameToShow
                     if (isNumberOnly) {
                         applyBlurEffect(activity.config)
+                        itemRecentsShowNumber.isVisible = true
                     } else {
                         removeBlurEffect()
+                        itemRecentsShowNumber.isVisible = false
                     }
                     setTextColor(textColor)
                     setTextSize(TypedValue.COMPLEX_UNIT_PX, currentFontSize)

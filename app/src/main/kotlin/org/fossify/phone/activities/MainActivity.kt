@@ -55,6 +55,7 @@ class MainActivity : SimpleActivity() {
     private var storedFontSize = 0
     private var storedStartNameWithSurname = false
     var cachedContacts = ArrayList<Contact>()
+    private var isGettingContacts = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isMaterialActivity = true
@@ -443,26 +444,6 @@ class MainActivity : SimpleActivity() {
         storedStartNameWithSurname = config.startNameWithSurname
     }
 
-    private fun getTabIcon(position: Int): Drawable {
-        val drawableId = when (position) {
-            0 -> R.drawable.ic_person_vector
-            1 -> R.drawable.ic_star_vector
-            else -> R.drawable.ic_clock_vector
-        }
-
-        return resources.getColoredDrawableWithColor(drawableId, getProperTextColor())
-    }
-
-    private fun getTabLabel(position: Int): String {
-        val stringId = when (position) {
-            0 -> R.string.contacts_tab
-            1 -> R.string.favorites_tab
-            else -> R.string.call_history_tab
-        }
-
-        return resources.getString(stringId)
-    }
-
     private fun refreshItems(openLastTab: Boolean = false) {
         if (isDestroyed || isFinishing) {
             return
@@ -627,6 +608,67 @@ class MainActivity : SimpleActivity() {
             }
         }
     }
+
+    fun refreshContacts(refreshTabsMask: Int) {
+        if (isDestroyed || isFinishing || isGettingContacts) {
+            return
+        }
+
+        isGettingContacts = true
+
+        //
+        if (refreshTabsMask and TAB_CONTACTS != 0) {
+            getContactsFragment()?.refreshItems()
+        }
+
+        if (refreshTabsMask and TAB_FAVORITES != 0) {
+            getFavoritesFragment()?.refreshItems()
+        }
+
+        isGettingContacts = false
+
+        //
+
+//        if (binding.viewPager.adapter == null) {
+//            binding.viewPager.adapter = ViewPagerAdapter(this, tabsList, config.showTabs)
+//            binding.viewPager.currentItem = getDefaultTab()
+//        }
+//
+//        ContactsHelper(this).getContacts { contacts ->
+//            isGettingContacts = false
+//            if (isDestroyed || isFinishing) {
+//                return@getContacts
+//            }
+//
+//            if (refreshTabsMask and TAB_CONTACTS != 0) {
+//                findViewById<MyViewPagerFragment<*>>(R.id.contacts_fragment)?.apply {
+//                    skipHashComparing = true
+//                    refreshContacts(contacts)
+//                }
+//            }
+//
+//            if (refreshTabsMask and TAB_FAVORITES != 0) {
+//                findViewById<MyViewPagerFragment<*>>(R.id.favorites_fragment)?.apply {
+//                    skipHashComparing = true
+//                    refreshContacts(contacts)
+//                }
+//            }
+//
+//            if (refreshTabsMask and TAB_GROUPS != 0) {
+//                findViewById<MyViewPagerFragment<*>>(R.id.groups_fragment)?.apply {
+//                    if (refreshTabsMask == TAB_GROUPS) {
+//                        skipHashComparing = true
+//                    }
+//                    refreshContacts(contacts)
+//                }
+//            }
+//
+//            if (binding.mainMenu.isSearchOpen) {
+//                getCurrentFragment()?.onSearchQueryChanged(binding.mainMenu.getCurrentQuery())
+//            }
+//        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun refreshCallLog(event: Events.RefreshCallLog) {

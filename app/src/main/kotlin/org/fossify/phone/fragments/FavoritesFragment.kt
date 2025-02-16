@@ -11,10 +11,12 @@ import org.fossify.commons.models.contacts.Contact
 import org.fossify.commons.views.MyGridLayoutManager
 import org.fossify.commons.views.MyLinearLayoutManager
 import org.fossify.phone.R
+import org.fossify.phone.activities.MainActivity
 import org.fossify.phone.activities.SimpleActivity
 import org.fossify.phone.adapters.ContactsAdapter
 import org.fossify.phone.databinding.FragmentFavoritesBinding
 import org.fossify.phone.databinding.FragmentLettersLayoutBinding
+import org.fossify.phone.dialogs.SelectContactsDialog
 import org.fossify.phone.extensions.config
 import org.fossify.phone.extensions.setupWithContacts
 import org.fossify.phone.interfaces.RefreshItemsListener
@@ -28,6 +30,23 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
         super.onFinishInflate()
         binding = FragmentLettersLayoutBinding.bind(FragmentFavoritesBinding.bind(this).favoritesFragment)
         innerBinding = LettersInnerBinding(binding)
+    }
+
+    override fun fabClicked() {
+        finishActMode()
+        showAddFavoritesDialog()
+    }
+
+    private fun showAddFavoritesDialog() {
+        SelectContactsDialog(activity!!, allContacts, true, false) { addedContacts, removedContacts ->
+            ContactsHelper(activity as SimpleActivity).apply {
+                addFavorites(addedContacts)
+                removeFavorites(removedContacts)
+            }
+
+            (activity as? MainActivity)?.refreshContacts(TAB_FAVORITES)
+            (activity as? MainActivity)?.refreshContacts(TAB_FAVORITES)
+        }
     }
 
     override fun setupFragment() {

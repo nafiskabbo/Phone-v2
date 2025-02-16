@@ -18,4 +18,10 @@
     <!-- keep these 2 values in dp to avoid scaling -->
     <dimen name="dialpad_text_size">28dp</dimen>
     <dimen name="dialpad_letters_text_size">12dp</dimen>
+
+
+    <dimen name="contact_photo_size">88dp</dimen>
+    <dimen name="contact_actions_size">48dp</dimen>
+    <dimen name="contact_icons_size">40dp</dimen>
+    <dimen name="top_contact_image_height">300dp</dimen>
 </resources>

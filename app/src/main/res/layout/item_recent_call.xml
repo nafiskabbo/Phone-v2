@@ -35,11 +35,25 @@
         android:textDirection="locale"
         android:textSize="@dimen/bigger_text_size"
         app:layout_constraintBottom_toTopOf="@id/item_recents_date_time"
-        app:layout_constraintEnd_toStartOf="@+id/overflow_menu_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_recents_show_number"
         app:layout_constraintStart_toEndOf="@+id/item_recents_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="John Doe" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/item_recents_show_number"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_eye"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/item_recents_name"
+        app:layout_constraintEnd_toStartOf="@+id/overflow_menu_icon"
+        app:layout_constraintTop_toTopOf="@id/item_recents_name"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/item_recents_sim_image"
